@@ -20,6 +20,7 @@ const postWebhook = async (req, res) => {
 
 const getWebhook = async (req, res) => {
   try {
+
     // Parse the query params
     let mode = req.query['hub.mode'];
     let token = req.query['hub.verify_token'];
@@ -37,7 +38,10 @@ const getWebhook = async (req, res) => {
 const allMessages = async (req, res) => {
   try {
 
+    const response = await Chatbot().allMessages();
+    console.log(response);
     
+    res.status(200).json({data: response, success: 'true', message: ''});
     
   } catch (err) {
     console.log(err);
@@ -47,7 +51,11 @@ const allMessages = async (req, res) => {
 const getSingleMessage = async (req, res) => {
   try {
 
+    const id = req.params.id;
+
+    const response = await Chatbot().getSingleMessage(id);
     
+    res.status(200).json({data: response, success: 'true', message: ''});
     
   } catch (err) {
     console.log(err);
@@ -57,7 +65,9 @@ const getSingleMessage = async (req, res) => {
 const summary = async (req, res) => {
   try {
 
-  
+    const response = await Chatbot().summary();
+    
+    res.status(200).json({data: response});
     
   } catch (err) {
     console.log(err);

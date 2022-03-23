@@ -1,4 +1,5 @@
 const { handleMessage } = require('../../utils/chatbot');
+const { logger } = require('../../utils/logger');
 const { FB_VERIFY_TOKEN } = require('../../config/config');
 const Chatbot = require('../models/chatbot.model');
 
@@ -28,6 +29,10 @@ module.exports = {
             });
           }
         } catch (ex) {
+          logger.log({
+            level: 'error',
+            message: ex.message,
+          });
           return { error: ex };
         }
       },
@@ -48,6 +53,71 @@ module.exports = {
                 }
             }
         } catch (ex) {
+          logger.log({
+            level: 'error',
+            message: ex.message,
+          });
+          return { error: ex };
+        }
+      },
+
+      async allMessages() {
+        try {
+          const result = await Chatbot.find({});
+
+          if(result.length === 0) return [];
+
+          // loop through results and return only the messages
+          const messages = result.map(item => {
+            return {
+              messages: item.messages,
+              _id: item._id,
+            };
+          });
+          return messages;
+        } catch (ex) {
+          logger.log({
+            level: 'error',
+            message: ex.message,
+          });
+          return { error: ex };
+        }
+      },
+
+      async getSingleMessage(id) {
+        try {
+          const result = await Chatbot.findById(id);
+
+          if(!result) return {};
+
+          return result;
+        } catch (ex) {
+          logger.log({
+            level: 'error',
+            message: ex.message,
+          });
+          return { error: ex };
+        }
+      },
+
+      async summary() {
+        try {
+          const results = await Chatbot.find({});
+
+          const data = results.map(item => {
+            return {
+              user: item._id,
+              name: item.name,
+              messages: item.messages,
+            };
+          });
+
+          return data;
+        } catch (ex) {
+          logger.log({
+            level: 'error',
+            message: ex.message,
+          });
           return { error: ex };
         }
       },
