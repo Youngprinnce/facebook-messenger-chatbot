@@ -1,5 +1,5 @@
 const homeRoute = require('../../config/routerConfig');
-const {home} = require('../controllers/home.controller');
+const { home } = require('../controllers/home.controller');
 
 homeRoute.get('/', home);
 

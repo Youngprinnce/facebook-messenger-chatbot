@@ -2,6 +2,7 @@
 const express = require('express');
 const InitiateMongoServer = require('./db/db');
 const homeRoutes = require('./api/routes/home.routes');
+const chatbotRoutes = require('./api/routes/chatbot.routes');
 
 // Instance of express
 const app = express();
@@ -11,13 +12,14 @@ InitiateMongoServer();
 
 // set the view engine to ejs
 app.set('view engine', 'ejs');
-app.set("views","./src/views");
+app.set('views', './src/views');
 
 // Middlewares
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-//initialize routes
+// initialize routes
 app.use(homeRoutes);
+app.use(chatbotRoutes);
 
 module.exports = app;
